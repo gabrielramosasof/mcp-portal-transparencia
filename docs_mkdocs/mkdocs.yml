@@ -1,0 +1,8 @@
+site_name: MCP Portal da Transparência Brasil Documentation
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Manual de Implantação Smithery AI: SMITHERY_DEPLOYMENT_MANUAL.md
