@@ -247,11 +247,23 @@ const licitacoes = await client.licitacoes.consultar({
 
 ## 🤝 Contribuindo
 
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+Para contribuir com este projeto, siga as diretrizes abaixo:
+
+1.  **Crie uma Nova Branch:** Antes de iniciar qualquer alteração, crie uma nova branch a partir da branch `main` para sua feature ou correção de bug.
+    ```bash
+    git checkout -b feature/sua-feature-ou-correcao
+    ```
+2.  **Desenvolva suas Alterações:** Implemente suas mudanças e certifique-se de que o código esteja de acordo com as convenções do projeto.
+3.  **Commit suas Mudanças:** Faça commits claros e descritivos.
+    ```bash
+    git commit -m 'feat: Adiciona nova funcionalidade'
+    ```
+4.  **Envie para o Repositório Remoto:**
+    ```bash
+    git push origin feature/sua-feature-ou-correcao
+    ```
+5.  **Abra um Pull Request (PR):** Abra um Pull Request da sua branch para a branch `main`.
+    *   **Importante:** Na descrição do PR, **sempre inclua a tag `@CodeRabbit`** para que a ferramenta de revisão de código seja acionada e auxilie na orientação da base de código.
 
 ## 📄 Licença
 
@@ -264,3 +276,7 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 - [Cadastro de API Key](https://api.portaldatransparencia.gov.br/api-de-dados/cadastrar-email)
 - [MCP Protocol](https://github.com/modelcontextprotocol/protocol)
 - [MCP Inspector](https://github.com/modelcontextprotocol/inspector)
+
+## 📚 Documentação Adicional
+
+- [Manual de Implantação de Servidores MCP no Smithery AI](SMITHERY_DEPLOYMENT_MANUAL.md)
