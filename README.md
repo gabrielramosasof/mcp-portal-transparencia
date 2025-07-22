@@ -253,6 +253,10 @@ const licitacoes = await client.licitacoes.consultar({
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
+## 🏛️ Arquitetura
+
+A documentação detalhada da arquitetura do sistema, incluindo diagramas de componentes e fluxos de dados, pode ser encontrada em [ARQUITETURA.md](./ARQUITETURA.md).
+
 ## 📄 Licença
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
