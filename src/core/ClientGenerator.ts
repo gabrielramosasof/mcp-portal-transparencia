@@ -13,9 +13,9 @@ export interface EndpointInfo {
   operationId: string;
   summary?: string;
   description?: string;
-  parameters?: any[];
-  requestBody?: any;
-  responses?: any;
+  parameters?: OpenAPI.ParameterObject[];
+  requestBody?: OpenAPI.RequestBodyObject;
+  responses?: OpenAPI.ResponsesObject;
   pathParams: string[];
   queryParams: string[];
   hasRequestBody: boolean;
@@ -143,7 +143,7 @@ export class ClientGenerator {
         if (!operation || typeof operation !== 'object' || !('operationId' in operation)) continue;
 
         // Type assertion for OpenAPI operation object
-        const op = operation as any;
+        const op = operation as OpenAPI.OperationObject;
 
         const tag = op.tags?.[0] || 'Default';
 
@@ -184,22 +184,37 @@ export class ClientGenerator {
   /**
    * Extract query parameters from operation parameters
    */
-  private extractQueryParams(parameters?: any[]): string[] {
+  private extractQueryParams(
+    parameters?: (OpenAPI.ParameterObject | OpenAPI.ReferenceObject)[]
+  ): string[] {
     if (!parameters) return [];
 
-    return parameters.filter(param => param.in === 'query').map(param => param.name);
+    return parameters
+      .map(p => {
+        if ('$ref' in p) {
+          // Handle reference objects if necessary, for now skipping
+          return null;
+        }
+        return p as OpenAPI.ParameterObject;
+      })
+      .filter(p => p !== null && p.in === 'query')
+      .map(p => (p as OpenAPI.ParameterObject).name);
   }
 
   /**
    * Infer response type from operation responses
    */
-  private inferResponseType(responses?: any): string {
+  private inferResponseType(responses?: OpenAPI.ResponsesObject): string {
     if (!responses) return 'any';
 
     // Try to get success response (200, 201, etc.)
     const successResponse = responses['200'] || responses['201'] || responses['default'];
 
-    if (successResponse?.content?.['application/json']?.schema) {
+    if (
+      successResponse &&
+      'content' in successResponse &&
+      successResponse.content?.['application/json']?.schema
+    ) {
       return 'any'; // For now, we'll use 'any' - this could be enhanced with proper type generation
     }
 
@@ -289,9 +304,8 @@ ${properties.join('\n')}
    * Get base URL from the OpenAPI specification
    */
   private getBaseUrl(): string {
-    const spec = this.spec as any;
-    if (spec.servers && spec.servers.length > 0) {
-      return spec.servers[0].url;
+    if (this.spec.servers && this.spec.servers.length > 0) {
+      return this.spec.servers[0].url;
     }
     return 'https://api.portaldatransparencia.gov.br';
   }
@@ -329,14 +343,14 @@ ${properties.join('\n')}
  * Common types for Portal da Transparência API clients
  */
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T> {
   data: T;
   status: number;
   statusText: string;
-  headers: any;
+  headers: Record<string, string>;
 }
 
-export interface PaginatedResponse<T = any> {
+export interface PaginatedResponse<T> {
   data: T[];
   total: number;
   page: number;
@@ -371,7 +385,7 @@ export interface RequestConfig {
       return str.replace(/[-_\s]+(.)?/g, (_, char) => (char ? char.toUpperCase() : ''));
     });
 
-    Handlebars.registerHelper('eq', (a: any, b: any) => {
+    Handlebars.registerHelper('eq', (a: string, b: string) => {
       return a === b;
     });
 
@@ -458,7 +472,7 @@ export class {{clientName}} {
   async {{camelCase operationId}}({{#if (hasParams this)}}params: {
     {{#each pathParams}}{{this}}: string;{{/each}}
     {{#each queryParams}}{{this}}?: string;{{/each}}
-  }{{#if hasRequestBody}}, data?: any{{/if}}{{else}}{{#if hasRequestBody}}data?: any{{/if}}{{/if}}): Promise<AxiosResponse<{{responseType}}>> {
+  }{{#if hasRequestBody}}, data?: Record<string, unknown>{{/if}}{{else}}{{#if hasRequestBody}}data?: Record<string, unknown>{{/if}}{{/if}}): Promise<AxiosResponse<{{responseType}}>> {
     const path = '{{path}}'{{#each pathParams}}.replace('{{{this}}}', encodeURIComponent(params.{{this}})){{/each}};
     
     {{#if queryParams}}
