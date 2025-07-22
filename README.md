@@ -265,6 +265,10 @@ Para contribuir com este projeto, siga as diretrizes abaixo:
 5.  **Abra um Pull Request (PR):** Abra um Pull Request da sua branch para a branch `main`.
     *   **Importante:** Na descrição do PR, **sempre inclua a tag `@CodeRabbit`** para que a ferramenta de revisão de código seja acionada e auxilie na orientação da base de código.
 
+## 🙏 Agradecimentos
+
+Este repositório foi baseado e inspirado no excelente trabalho de [dutradotdev](https://github.com/dutradotdev) em seu projeto [mcp-portal-transparencia](https://github.com/dutradotdev/mcp-portal-transparencia.git).
+
 ## 📄 Licença
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
